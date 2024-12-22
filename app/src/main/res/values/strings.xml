@@ -6,4 +6,5 @@
     <string name="city_screen">City</string>
     <string name="weather_screen">Weather</string>
     <string name="back_button">Back</string>
+    <string name="api_key">oWdjk1coE7G2MPguYW5y91ccEx3x2RQa</string>
 </resources>

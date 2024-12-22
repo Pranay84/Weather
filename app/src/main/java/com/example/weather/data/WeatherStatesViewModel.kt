@@ -14,6 +14,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import coil.network.HttpException
 import com.example.weather.WeatherStatesApp
+import io.github.cdimascio.dotenv.Dotenv
 import com.example.weather.model.CitySearchData
 import com.example.weather.model.FormattedCity
 import com.example.weather.model.FormattedForeCast
@@ -21,6 +22,7 @@ import com.example.weather.model.WeatherLocationStates
 import com.example.weather.network.WeatherCityRepo
 import com.example.weather.network.WeatherForecastRepo
 import com.example.weather.network.WeatherStatesRepo
+import com.google.firebase.BuildConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -66,6 +68,10 @@ class WeatherStatesViewModel(
     lateinit var returnData: List<WeatherLocationStates>
     lateinit var returnData2: List<FormattedCity>
     lateinit var returnData3: List<FormattedForeCast>
+
+    // val api_key = BuildConfig.
+    val api_key = com.example.weather.BuildConfig.API_KEY
+
 
     fun onLocationSelect(location: String) {
         _locationUi.update { currentState ->
@@ -128,7 +134,7 @@ class WeatherStatesViewModel(
     private suspend fun statesViewModel(): List<WeatherLocationStates>{
         stateUi = StatesUi.Loading
         stateUi = try {
-            returnData = statesRepo.getStates("IN", "oWdjk1coE7G2MPguYW5y91ccEx3x2RQa")
+            returnData = statesRepo.getStates("IN", "${api_key}")
             StatesUi.Success(returnData)
         } catch (e: IOException) {
             StatesUi.Error
@@ -150,7 +156,7 @@ class WeatherStatesViewModel(
         if (stateId != null && cityName != null) {
             cityUi = try {
                 returnData2 = cityRepo.getCity(
-                    "IN", stateId, "oWdjk1coE7G2MPguYW5y91ccEx3x2RQa", cityName
+                    "IN", stateId, "${api_key}", cityName
                 )
                 CityUi.Success(returnData2)
             } catch (e: IOException) {
@@ -171,7 +177,7 @@ class WeatherStatesViewModel(
         if (cityId != null) {
             weatherUi = try {
                 returnData3 = forecastRepo.getForecastData(
-                    cityId, "oWdjk1coE7G2MPguYW5y91ccEx3x2RQa")
+                    cityId, "${api_key}")
                 WeatherUi.Success(returnData3)
             } catch (e: IOException) {
                 WeatherUi.Error

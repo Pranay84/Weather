@@ -27,6 +27,15 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            buildConfigField("String", "API_KEY", "\"${project.findProperty("API_KEY")}\"")
+        }
+        getByName("release") {
+            buildConfigField("String", "API_KEY", "\"${project.findProperty("API_KEY")}\"")
+        }
+    }
+
+    buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -49,6 +58,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -74,6 +84,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation(libs.firebase.auth)
     // kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
+    implementation ("io.github.cdimascio:dotenv-kotlin:6.2.2")
 
     val lifecycle_version = "2.8.7"
 
@@ -97,6 +108,7 @@ dependencies {
 
     implementation ("com.google.firebase:firebase-auth-ktx")
     implementation ("com.google.android.gms:play-services-auth:20.5.0")
+
 
     /*
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
